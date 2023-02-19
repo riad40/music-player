@@ -1,5 +1,7 @@
-import {Text} from 'react-native';
+import AppNavigator from './AppNavigator';
 
-export default function App() {
-  return <Text>test</Text>;
+function App() {
+  return <AppNavigator />;
 }
+
+export default App;
