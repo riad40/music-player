@@ -92,29 +92,76 @@ function Home() {
         </View>
         <View style={homeStyling.playbackControls}>
           <TouchableOpacity>
-            <Ionicons name="arrow-back-outline" size={24} color="#fff" />
+            <Ionicons name="play-skip-back-outline" size={24} color="#fff" />
           </TouchableOpacity>
           <TouchableOpacity style={homeStyling.playButton}>
-            <Ionicons name="play-outline" size={48} color="#1DB954" />
+            <Ionicons name="play-outline" size={40} color="#1DB954" />
           </TouchableOpacity>
           <TouchableOpacity>
-            <Ionicons name="arrow-forward-outline" size={24} color="#fff" />
+            <Ionicons name="play-skip-forward-outline" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
       </View>
       <Modal animationType={'slide'} transparent={false} visible={modalVisible}>
-        <Ionicons
-          name="close-outline"
-          size={24}
-          color="#000"
-          onPress={() => {
-            setModalVisible(false);
-          }}
-        />
-        <Text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget
-          tempus augue, a convallis velit.
-        </Text>
+        <View style={homeStyling.modalContainer}>
+          <View style={homeStyling.modalHeader}>
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible(false);
+              }}>
+              <Ionicons name="close-outline" size={24} color="#fff" />
+            </TouchableOpacity>
+            <Text style={homeStyling.modalTitle}>Now Playing</Text>
+            <TouchableOpacity>
+              <Ionicons
+                name="ellipsis-vertical-outline"
+                size={24}
+                color="#fff"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={homeStyling.modalBody}>
+            <Image
+              source={require('../assets/imgs/playlist.jpeg')}
+              style={homeStyling.modalImage}
+            />
+            <Text style={homeStyling.modalSongTitle}>Song Title</Text>
+            <Text style={homeStyling.modalSongArtist}>Artist Name</Text>
+            <View style={homeStyling.modalSongProgress}>
+              <View style={homeStyling.modalSongProgressBar}>
+                <View style={homeStyling.modalSongProgressBarPlayed}></View>
+              </View>
+            </View>
+
+            <Text style={homeStyling.modalSongDuration}>0:00</Text>
+
+            <View style={homeStyling.modalControls}>
+              <TouchableOpacity>
+                <Ionicons name="heart-outline" size={24} color="#fff" />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Ionicons
+                  name="play-skip-back-outline"
+                  size={24}
+                  color="#fff"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={homeStyling.modalPlayButton}>
+                <Ionicons name="play-outline" size={48} color="#000" />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Ionicons
+                  name="play-skip-forward-outline"
+                  size={24}
+                  color="#fff"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Ionicons name="repeat-outline" size={24} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </Modal>
     </View>
   );
