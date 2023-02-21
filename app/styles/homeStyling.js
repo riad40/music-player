@@ -206,29 +206,6 @@ const homeStyling = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  modalSongProgress: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    marginTop: 20,
-  },
-  modalSongProgressBar: {
-    height: 3,
-    width: '100%',
-    backgroundColor: '#1DB954',
-    borderRadius: 10,
-  },
-  modalSongDuration: {
-    color: '#fff',
-    fontSize: 14,
-  },
-  modalSongProgressBarPlayed: {
-    height: 3,
-    width: '50%',
-    backgroundColor: '#fff',
-    borderRadius: 10,
-  },
 });
 
 export default homeStyling;

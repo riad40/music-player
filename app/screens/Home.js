@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import styles from '../styles/appContainer';
 import homeStyling from '../styles/homeStyling';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import data from '../helpers/data';
+import ProgressBar from '../components/ProgressBar';
 
 function Home() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -127,13 +128,8 @@ function Home() {
             />
             <Text style={homeStyling.modalSongTitle}>Song Title</Text>
             <Text style={homeStyling.modalSongArtist}>Artist Name</Text>
-            <View style={homeStyling.modalSongProgress}>
-              <View style={homeStyling.modalSongProgressBar}>
-                <View style={homeStyling.modalSongProgressBarPlayed}></View>
-              </View>
-            </View>
 
-            <Text style={homeStyling.modalSongDuration}>0:00</Text>
+            <ProgressBar totalLength={150} />
 
             <View style={homeStyling.modalControls}>
               <TouchableOpacity>
@@ -147,7 +143,7 @@ function Home() {
                 />
               </TouchableOpacity>
               <TouchableOpacity style={homeStyling.modalPlayButton}>
-                <Ionicons name="play-outline" size={48} color="#000" />
+                <Ionicons name="play-outline" size={24} color="#000" />
               </TouchableOpacity>
               <TouchableOpacity>
                 <Ionicons
