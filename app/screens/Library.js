@@ -7,6 +7,7 @@ import useStoragePermission from '../hooks/useStoragePermission';
 
 function Library() {
   const [songs, setSongs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getSongs = async () => {
     try {
@@ -16,6 +17,7 @@ function Library() {
       const files = await RNFS.readDir(path);
       const songs = files.filter(file => file.name.endsWith('.mp3'));
       setSongs(songs);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -24,6 +26,24 @@ function Library() {
   useEffect(() => {
     getSongs();
   }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: '#fff',
+            fontSize: 20,
+            fontWeight: 'bold',
+          }}>
+          Loading....
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>

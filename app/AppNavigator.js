@@ -5,6 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Home from './screens/Home';
 import Library from './screens/Library';
 import Settings from './screens/Settings';
+import AudioPlayer from './screens/AudioPlayer';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +23,8 @@ const AppNavigator = () => {
               iconName = focused ? 'library' : 'library-outline';
             } else if (route.name === 'Settings') {
               iconName = focused ? 'settings' : 'settings-outline';
+            } else if (route.name === 'Player') {
+              iconName = focused ? 'musical-notes' : 'musical-notes-outline';
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
@@ -42,6 +45,7 @@ const AppNavigator = () => {
         })}>
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Library" component={Library} />
+        <Tab.Screen name="Player" component={AudioPlayer} />
         <Tab.Screen name="Settings" component={Settings} />
       </Tab.Navigator>
     </NavigationContainer>

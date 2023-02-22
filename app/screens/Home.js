@@ -5,18 +5,13 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  Modal,
 } from 'react-native';
-import {useState, useEffect} from 'react';
 import styles from '../styles/appContainer';
 import homeStyling from '../styles/homeStyling';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import data from '../helpers/data';
-import ProgressBar from '../components/ProgressBar';
 
 function Home() {
-  const [modalVisible, setModalVisible] = useState(false);
-
   return (
     <View style={styles.container}>
       <View style={homeStyling.headerContainer}>
@@ -103,62 +98,6 @@ function Home() {
           </TouchableOpacity>
         </View>
       </View>
-      <Modal animationType={'slide'} transparent={false} visible={modalVisible}>
-        <View style={homeStyling.modalContainer}>
-          <View style={homeStyling.modalHeader}>
-            <TouchableOpacity
-              onPress={() => {
-                setModalVisible(false);
-              }}>
-              <Ionicons name="close-outline" size={24} color="#fff" />
-            </TouchableOpacity>
-            <Text style={homeStyling.modalTitle}>Now Playing</Text>
-            <TouchableOpacity>
-              <Ionicons
-                name="ellipsis-vertical-outline"
-                size={24}
-                color="#fff"
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={homeStyling.modalBody}>
-            <Image
-              source={require('../assets/imgs/playlist.jpeg')}
-              style={homeStyling.modalImage}
-            />
-            <Text style={homeStyling.modalSongTitle}>Song Title</Text>
-            <Text style={homeStyling.modalSongArtist}>Artist Name</Text>
-
-            <ProgressBar totalLength={150} />
-
-            <View style={homeStyling.modalControls}>
-              <TouchableOpacity>
-                <Ionicons name="heart-outline" size={24} color="#fff" />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Ionicons
-                  name="play-skip-back-outline"
-                  size={24}
-                  color="#fff"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={homeStyling.modalPlayButton}>
-                <Ionicons name="play-outline" size={24} color="#000" />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Ionicons
-                  name="play-skip-forward-outline"
-                  size={24}
-                  color="#fff"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Ionicons name="repeat-outline" size={24} color="#fff" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 }
