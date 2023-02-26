@@ -1,11 +1,11 @@
-import {Text, View, FlatList} from 'react-native';
+import {Text, View, FlatList, TouchableOpacity} from 'react-native';
 import {useState, useEffect} from 'react';
 import RNFS from 'react-native-fs';
 import styles from '../styles/appContainer';
 import libraryStyling from '../styles/libraryStyling';
 import useStoragePermission from '../hooks/useStoragePermission';
 
-function Library() {
+function Library({navigation}) {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,6 +21,11 @@ function Library() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const sendSong = song => {
+    // navigae to player screen with song as a prop
+    navigation.navigate('Player', {song});
   };
 
   useEffect(() => {
@@ -52,9 +57,14 @@ function Library() {
       <FlatList
         data={songs}
         renderItem={({item}) => (
-          <View style={libraryStyling.songContainer}>
-            <Text style={libraryStyling.songTitle}>{item.name}</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              sendSong(item);
+            }}>
+            <View style={libraryStyling.songContainer}>
+              <Text style={libraryStyling.songTitle}>{item.name}</Text>
+            </View>
+          </TouchableOpacity>
         )}
       />
     </View>

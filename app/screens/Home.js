@@ -11,7 +11,7 @@ import homeStyling from '../styles/homeStyling';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import data from '../helpers/data';
 
-function Home() {
+function Home({navigation}) {
   return (
     <View style={styles.container}>
       <View style={homeStyling.headerContainer}>
@@ -80,7 +80,7 @@ function Home() {
           <TouchableOpacity
             style={homeStyling.songDetails}
             onPress={() => {
-              setModalVisible(true);
+              navigation.navigate('Player');
             }}>
             <Text style={homeStyling.songTitle}>Song Title</Text>
             <Text style={homeStyling.songArtist}>Artist Name</Text>

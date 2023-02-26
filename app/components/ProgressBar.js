@@ -1,21 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Slider from '@react-native-community/slider';
+import TrackPlayer from 'react-native-track-player';
 
-const ProgressBar = ({totalLength}) => {
-  const [currentPosition, setCurrentPosition] = useState(0);
-
-  useEffect(() => {
-    if (currentPosition < totalLength) {
-      const intervalId = setInterval(() => {
-        setCurrentPosition(currentPosition + 1);
-      }, 1000);
-      return () => clearInterval(intervalId);
-    }
-  }, [currentPosition, totalLength]);
-
-  const onSliderValueChange = value => {
-    setCurrentPosition(value);
+const ProgressBar = ({totalLength, currentPosition}) => {
+  const onSliderValueChange = async value => {
+    await TrackPlayer.seekTo(value);
   };
 
   const formatTime = timeInSeconds => {
