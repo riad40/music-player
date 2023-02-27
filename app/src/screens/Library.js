@@ -1,13 +1,16 @@
 import {Text, View, FlatList, TouchableOpacity} from 'react-native';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import RNFS from 'react-native-fs';
 import styles from '../styles/appContainer';
 import libraryStyling from '../styles/libraryStyling';
 import useStoragePermission from '../hooks/useStoragePermission';
+import {DataContext} from '../context/DataContext';
 
 function Library({navigation}) {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const {setData} = useContext(DataContext);
 
   const getSongs = async () => {
     try {
@@ -17,6 +20,7 @@ function Library({navigation}) {
       const files = await RNFS.readDir(path);
       const songs = files.filter(file => file.name.endsWith('.mp3'));
       setSongs(songs);
+      setData(songs);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -53,7 +57,6 @@ function Library({navigation}) {
   return (
     <View style={styles.container}>
       <Text style={libraryStyling.heading}>Library</Text>
-
       <FlatList
         data={songs}
         renderItem={({item}) => (

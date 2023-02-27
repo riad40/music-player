@@ -1,4 +1,4 @@
-import AppNavigator from './AppNavigator';
+import AppNavigator from './src/AppNavigator';
 
 function App() {
   return <AppNavigator />;

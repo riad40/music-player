@@ -3,25 +3,55 @@ import audioPlayerStyling from '../styles/audioPlayerStyling';
 import ProgressBar from '../components/ProgressBar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TrackPlayer, {useProgress} from 'react-native-track-player';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
+import {DataContext} from '../context/DataContext';
+
+TrackPlayer.updateOptions({
+  stopWithApp: false,
+  capabilities: [TrackPlayer.CAPABILITY_PLAY, TrackPlayer.CAPABILITY_PAUSE],
+  compactCapabilities: [
+    TrackPlayer.CAPABILITY_PLAY,
+    TrackPlayer.CAPABILITY_PAUSE,
+  ],
+});
 
 function AudioPlayer({navigation, route}) {
   const {song} = route.params;
 
-  const {position, duration} = useProgress();
+  const {data} = useContext(DataContext);
 
-  const [isPlaying, setIsPlaying] = useState(false);
+  // set id for each song
+  data.map((song, index) => {
+    song.id = index + 1;
+  });
 
-  const playSong = async () => {
+  // set up the player and add the songs to the queue
+  const setTracks = async () => {
     try {
       await TrackPlayer.setupPlayer();
       await TrackPlayer.add({
-        id: song.name,
+        id: song.id,
         url: song.path,
-        title: 'title',
-        artist: 'artist',
+        title: song.name,
+        artist: 'Artist Name',
         artwork: require('../assets/imgs/playlist.jpeg'),
       });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // set the state of the progress bar
+  const {position, duration} = useProgress();
+
+  // set the state of the player
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  // play the song that was clicked on from the library screen
+  const playSong = async () => {
+    setTracks();
+    try {
+      // await TrackPlayer.skip(song.id);
       await TrackPlayer.play();
       setIsPlaying(true);
     } catch (error) {
@@ -29,16 +59,15 @@ function AudioPlayer({navigation, route}) {
     }
   };
 
+  // toggle the playback
   const togglePlayback = async () => {
-    if (isPlaying) {
-      await TrackPlayer.pause();
-    } else {
-      await TrackPlayer.play();
+    const currentTrack = await TrackPlayer.getCurrentTrack();
+    if (currentTrack !== null) {
+      isPlaying ? TrackPlayer.pause() : TrackPlayer.play();
+      setIsPlaying(!isPlaying);
     }
-    setIsPlaying(!isPlaying);
   };
 
-  // play the song that's passed as a prop
   useEffect(() => {
     playSong();
   }, []);
@@ -65,7 +94,7 @@ function AudioPlayer({navigation, route}) {
         <Text style={audioPlayerStyling.modalSongTitle}>{song.name}</Text>
         <Text style={audioPlayerStyling.modalSongArtist}>Artist Name</Text>
 
-        <ProgressBar totalLength={duration} currentPosition={position} />
+        <ProgressBar currentPosition={position} totalLength={duration} />
 
         <View style={audioPlayerStyling.modalControls}>
           <TouchableOpacity>
