@@ -67,6 +67,17 @@ function AudioPlayer({navigation, route}) {
     await setSongInfoState();
   };
 
+  // the repeat functinality
+  const [repeat, setRepeat] = useState(false);
+  const repeatSong = async () => {
+    try {
+      await TrackPlayer.setRepeatMode(repeat ? 0 : 1);
+      setRepeat(!repeat);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     playSong();
   }, [song]);
@@ -114,8 +125,12 @@ function AudioPlayer({navigation, route}) {
           <TouchableOpacity onPress={nextSong}>
             <Ionicons name="play-skip-forward-outline" size={24} color="#fff" />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="repeat-outline" size={24} color="#fff" />
+          <TouchableOpacity onPress={repeatSong}>
+            {repeat ? (
+              <Ionicons name="repeat" size={24} color="#1DB954" />
+            ) : (
+              <Ionicons name="repeat" size={24} color="#fff" />
+            )}
           </TouchableOpacity>
         </View>
       </View>
