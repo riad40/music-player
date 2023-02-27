@@ -78,6 +78,20 @@ function AudioPlayer({navigation, route}) {
     }
   };
 
+  // the shuffle functionality
+  const [shuffle, setShuffle] = useState(false);
+  const shuffleSongs = async () => {
+    try {
+      const tracks = await TrackPlayer.getQueue();
+      const shuffledTracks = tracks.sort(() => Math.random() - 0.5);
+      await TrackPlayer.removeUpcomingTracks();
+      await TrackPlayer.add(shuffledTracks);
+      setShuffle(!shuffle);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     playSong();
   }, [song]);
@@ -107,8 +121,12 @@ function AudioPlayer({navigation, route}) {
         <ProgressBar currentPosition={position} totalLength={duration} />
 
         <View style={audioPlayerStyling.modalControls}>
-          <TouchableOpacity>
-            <Ionicons name="heart-outline" size={24} color="#fff" />
+          <TouchableOpacity onPress={shuffleSongs}>
+            {shuffle ? (
+              <Ionicons name="shuffle-outline" size={24} color="#1DB954" />
+            ) : (
+              <Ionicons name="shuffle-outline" size={24} color="#fff" />
+            )}
           </TouchableOpacity>
           <TouchableOpacity onPress={previousSong}>
             <Ionicons name="play-skip-back-outline" size={24} color="#fff" />
