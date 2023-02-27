@@ -9,6 +9,7 @@ import {DataContext} from '../context/DataContext';
 function AudioPlayer({navigation, route}) {
   // set the state of the player
   const [isPlaying, setIsPlaying] = useState(false);
+  const [songInfo, setSongInfo] = useState();
 
   const {song} = route.params;
 
@@ -16,6 +17,16 @@ function AudioPlayer({navigation, route}) {
 
   // get the song id from the context
   const songId = data.findIndex(item => item.title === song.name);
+
+  // set song info
+  const setSongInfoState = async () => {
+    const currentTrack = await TrackPlayer.getCurrentTrack();
+    if (currentTrack !== null) {
+      const trackData = await TrackPlayer.getTrack(currentTrack);
+      const currentSong = data.find(item => item.title === trackData.title);
+      setSongInfo(currentSong);
+    }
+  };
 
   // set up the player and add the songs to the queue
   const playSong = async () => {
@@ -25,6 +36,8 @@ function AudioPlayer({navigation, route}) {
       // play the song
       await TrackPlayer.play();
       setIsPlaying(true);
+      // set the song info
+      await setSongInfoState();
     } catch (error) {
       console.log(error);
     }
@@ -40,6 +53,18 @@ function AudioPlayer({navigation, route}) {
       isPlaying ? TrackPlayer.pause() : TrackPlayer.play();
       setIsPlaying(!isPlaying);
     }
+  };
+
+  // play the next song
+  const nextSong = async () => {
+    await TrackPlayer.skipToNext();
+    await setSongInfoState();
+  };
+
+  // play the previous song
+  const previousSong = async () => {
+    await TrackPlayer.skipToPrevious();
+    await setSongInfoState();
   };
 
   useEffect(() => {
@@ -65,7 +90,7 @@ function AudioPlayer({navigation, route}) {
           source={require('../assets/imgs/playlist.jpeg')}
           style={audioPlayerStyling.modalImage}
         />
-        <Text style={audioPlayerStyling.modalSongTitle}>{song.name}</Text>
+        <Text style={audioPlayerStyling.modalSongTitle}>{songInfo?.name}</Text>
         <Text style={audioPlayerStyling.modalSongArtist}>Artist Name</Text>
 
         <ProgressBar currentPosition={position} totalLength={duration} />
@@ -74,7 +99,7 @@ function AudioPlayer({navigation, route}) {
           <TouchableOpacity>
             <Ionicons name="heart-outline" size={24} color="#fff" />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={previousSong}>
             <Ionicons name="play-skip-back-outline" size={24} color="#fff" />
           </TouchableOpacity>
           <TouchableOpacity
@@ -86,7 +111,7 @@ function AudioPlayer({navigation, route}) {
               <Ionicons name="play-outline" size={24} color="#000" />
             )}
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={nextSong}>
             <Ionicons name="play-skip-forward-outline" size={24} color="#fff" />
           </TouchableOpacity>
           <TouchableOpacity>
