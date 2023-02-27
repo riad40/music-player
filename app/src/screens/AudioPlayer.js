@@ -2,7 +2,10 @@ import {Text, View, Image, TouchableOpacity} from 'react-native';
 import audioPlayerStyling from '../styles/audioPlayerStyling';
 import ProgressBar from '../components/ProgressBar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import TrackPlayer, {useProgress} from 'react-native-track-player';
+import TrackPlayer, {
+  useProgress,
+  useTrackPlayerEvents,
+} from 'react-native-track-player';
 import React, {useEffect, useState, useContext} from 'react';
 import {DataContext} from '../context/DataContext';
 
@@ -91,6 +94,14 @@ function AudioPlayer({navigation, route}) {
       console.log(error);
     }
   };
+
+  // set up the player events
+
+  useTrackPlayerEvents(['playback-track-changed'], async event => {
+    if (event.type === 'playback-track-changed') {
+      await setSongInfoState();
+    }
+  });
 
   useEffect(() => {
     playSong();
