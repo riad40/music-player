@@ -2,6 +2,8 @@
 #
 .DS_Store
 
+helpers/enviroments.js
+
 # Xcode
 #
 build/

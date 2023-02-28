@@ -1,4 +1,4 @@
-import {Text, View, Image, TouchableOpacity} from 'react-native';
+import {Text, View, Image, TouchableOpacity, ScrollView} from 'react-native';
 import audioPlayerStyling from '../styles/audioPlayerStyling';
 import ProgressBar from '../components/ProgressBar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -126,8 +126,16 @@ function AudioPlayer({navigation, route}) {
           source={require('../assets/imgs/playlist.jpeg')}
           style={audioPlayerStyling.modalImage}
         />
-        <Text style={audioPlayerStyling.modalSongTitle}>{songInfo?.name}</Text>
-        <Text style={audioPlayerStyling.modalSongArtist}>Artist Name</Text>
+        <Text style={audioPlayerStyling.modalSongTitle}>{songInfo?.song}</Text>
+        <Text style={audioPlayerStyling.modalSongArtist}>
+          {songInfo?.artist}
+        </Text>
+
+        <ScrollView style={audioPlayerStyling.modalLyrics}>
+          <Text style={audioPlayerStyling.modalLyricsText}>
+            {songInfo?.lyrics?._j}
+          </Text>
+        </ScrollView>
 
         <ProgressBar currentPosition={position} totalLength={duration} />
 

@@ -55,6 +55,17 @@ const audioPlayerStyling = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  modalLyrics: {
+    height: 200,
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  modalLyricsText: {
+    color: '#fff',
+    fontSize: 14,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
 });
 
 export default audioPlayerStyling;
