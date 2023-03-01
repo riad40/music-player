@@ -64,6 +64,7 @@ const audioPlayerStyling = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     textAlign: 'center',
+    marginBottom: 20,
   },
 });
 

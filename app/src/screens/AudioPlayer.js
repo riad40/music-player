@@ -40,14 +40,8 @@ function AudioPlayer({navigation, route}) {
       // play the song
       await TrackPlayer.play();
       setIsPlaying(true);
-      // call lyricsApi to get the lyrics
-      const lyrics = await lyricsApi(songInfo.artist, songInfo.song);
-      if (lyrics) {
-        setSongInfo({...songInfo, lyrics});  
-      }
       // set the song info
       await setSongInfoState();
-      console.log(songInfo);
     } catch (error) {
       console.log(error);
     }
@@ -140,11 +134,11 @@ function AudioPlayer({navigation, route}) {
           { songInfo?.artist ? songInfo?.artist : 'Unknown Artist'}
         </Text>
 
-        <ScrollView style={audioPlayerStyling.modalLyrics}>
-          <Text style={audioPlayerStyling.modalLyricsText}>
-            {songInfo?.lyrics ? songInfo?.lyrics : 'No lyrics found'}
-          </Text>
-        </ScrollView>
+        {/* <ScrollView style={audioPlayerStyling.modalLyrics}> */}
+          <TouchableOpacity onPress={() => navigation.navigate('Lyrics', {songInfo})}>
+            <Text style={audioPlayerStyling.modalLyricsText}>View Lyrics</Text>
+          </TouchableOpacity>
+        {/* </ScrollView> */}
 
         <ProgressBar currentPosition={position} totalLength={duration} />
 

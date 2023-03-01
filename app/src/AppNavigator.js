@@ -7,8 +7,10 @@ import Library from './screens/Library';
 import Settings from './screens/Settings';
 import AudioPlayer from './screens/AudioPlayer';
 import {DataProvider} from './context/DataContext';
+import Lyrics from './screens/Lyrics';
 
 const Tab = createBottomTabNavigator();
+
 
 const AppNavigator = () => {
   return (
@@ -27,6 +29,8 @@ const AppNavigator = () => {
                 iconName = focused ? 'settings' : 'settings-outline';
               } else if (route.name === 'Player') {
                 iconName = focused ? 'musical-notes' : 'musical-notes-outline';
+              } else if (route.name === 'Lyrics') {
+                iconName = focused ? 'book' : 'book-outline';
               }
 
               return <Ionicons name={iconName} size={size} color={color} />;
@@ -48,6 +52,7 @@ const AppNavigator = () => {
           <Tab.Screen name="Home" component={Home} />
           <Tab.Screen name="Library" component={Library} />
           <Tab.Screen name="Player" component={AudioPlayer} />
+          <Tab.Screen name="Lyrics" component={Lyrics} />
           <Tab.Screen name="Settings" component={Settings} />
         </Tab.Navigator>
       </NavigationContainer>
