@@ -8,6 +8,7 @@ import TrackPlayer, {
 } from 'react-native-track-player';
 import React, {useEffect, useState, useContext} from 'react';
 import {DataContext} from '../context/DataContext';
+import lyricsApi from '../helpers/lyricsApi';
 
 function AudioPlayer({navigation, route}) {
   // set the state of the player
@@ -39,8 +40,14 @@ function AudioPlayer({navigation, route}) {
       // play the song
       await TrackPlayer.play();
       setIsPlaying(true);
+      // call lyricsApi to get the lyrics
+      const lyrics = await lyricsApi(songInfo.artist, songInfo.song);
+      if (lyrics) {
+        setSongInfo({...songInfo, lyrics});  
+      }
       // set the song info
       await setSongInfoState();
+      console.log(songInfo);
     } catch (error) {
       console.log(error);
     }
@@ -126,14 +133,16 @@ function AudioPlayer({navigation, route}) {
           source={require('../assets/imgs/playlist.jpeg')}
           style={audioPlayerStyling.modalImage}
         />
-        <Text style={audioPlayerStyling.modalSongTitle}>{songInfo?.song}</Text>
+        <Text style={audioPlayerStyling.modalSongTitle}>
+          {songInfo?.song ? songInfo?.song : songInfo?.title}
+        </Text>
         <Text style={audioPlayerStyling.modalSongArtist}>
-          {songInfo?.artist}
+          { songInfo?.artist ? songInfo?.artist : 'Unknown Artist'}
         </Text>
 
         <ScrollView style={audioPlayerStyling.modalLyrics}>
           <Text style={audioPlayerStyling.modalLyricsText}>
-            {songInfo?.lyrics?._j}
+            {songInfo?.lyrics ? songInfo?.lyrics : 'No lyrics found'}
           </Text>
         </ScrollView>
 

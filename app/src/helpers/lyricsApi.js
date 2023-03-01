@@ -1,18 +1,50 @@
 import axios from 'axios';
-import {MUSIXMATCH_API_KEY} from './enviroments';
+import {API_KEY} from './enviroments';
+import cheerio from 'cheerio';
+
+const API_URL = 'https://api.genius.com';
 
 const lyricsApi = async (artist, track) => {
   try {
-    const data = await axios.get(
-      `https://api.musixmatch.com/ws/1.1/matcher.lyrics.get?format=json&callback=callback&q_track=${encodeURIComponent(
-        track,
-      )}&q_artist=${encodeURIComponent(artist)}&apikey=${MUSIXMATCH_API_KEY}`,
-    );
-    // check if the lyrics are available
-    if (data.data.message.body.lyrics) {
-      return data.data.message.body.lyrics.lyrics_body;
+    const response = await axios.get(`${API_URL}/search`, {
+      params: {
+        q: `${artist} ${track}`,
+      },
+      headers: {
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    });
+
+    const song = response.data.response.hits[0];
+
+    const songId = song.result.id;
+
+    if (!songId) {
+      return 'Song not found';
     }
-    return 'No lyrics found';
+
+    const songDetails = await axios.get(`${API_URL}/songs/${songId}`, {
+      headers: {
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    });
+
+    const lyricsResponse = await axios.get(
+      `${songDetails.data.response.song.url}`,
+      {
+        headers: {
+          Authorization: `Bearer ${API_KEY}`,
+        },
+      },
+    );
+
+    const lyrics = lyricsResponse.data;
+
+    const $ = cheerio.load(lyrics);
+
+    const lyricsText = $('#lyrics-root > div.Lyrics__Container-sc-1ynbvzw-6.YYrds').text();
+
+    return lyricsText;
   } catch (error) {
     console.log(error);
     return 'No lyrics found';

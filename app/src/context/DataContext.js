@@ -13,15 +13,16 @@ export const DataProvider = ({children}) => {
       data[index].id = index;
       data[index].url = song.path;
       data[index].title = song.name;
-      // extract the artist and song name from the song title only if the song title contains '-'
-      if (song.name.includes('-')) {
-        const [artist, title] = song.name.split('-');
+
+      // get the song name and artist from the song title
+      if(song.name.includes('-')){
+        // for the song name i need to remove the file extension and also all its between parentheses
+        const songName = song.name.split('-')[1].replace(/\([^()]*\)/g, '').replace('.mp3', '');
+        const artist = song.name.split('-')[0];
+        data[index].song = songName;
         data[index].artist = artist;
-        // trim the title from any .mp3 or .wav extensions or (something)
-        data[index].song = title;
       }
-      // get the lyrics for the song
-      data[index].lyrics = lyricsApi(data[index].artist, data[index].song);
+
     });
     // setup the player, and add the songs to the Queue
     TrackPlayer.setupPlayer().then(async () => {
