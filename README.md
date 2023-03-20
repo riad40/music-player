@@ -6,7 +6,7 @@ music player is a mobile app built using the React Native CLI, It offers basic m
 1. Clone the repo
 
 ```bash
-git clone https://github.com/riad40/MovieHub
+git clone https://github.com/riad40/music-player.git
 ```
 
 2. Navigate to the app directory
